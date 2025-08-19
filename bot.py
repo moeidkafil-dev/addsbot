@@ -135,16 +135,29 @@ async def check_subs(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text("درخواستی برای فایل ثبت نشده.")
 
 def main():
-    if not BOT_TOKEN:
-        raise RuntimeError("BOT_TOKEN env var is not set.")
-    app = Application.builder().token(BOT_TOKEN).build()
+    app = Application.builder().token(TOKEN).build()
+
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("whoami", whoami))
-    app.add_handler(CommandHandler("channels", channels_cmd))
-    app.add_handler(CommandHandler("get", get_media))
-    app.add_handler(CommandHandler("save", save_media))
-    app.add_handler(CallbackQueryHandler(check_subs, pattern="^check_subs$"))
-    app.run_polling(allowed_updates=["message", "callback_query"])
+    app.add_handler(CommandHandler("help", help_cmd))
+    app.add_handler(CommandHandler("tr", tr))
+    app.add_handler(CommandHandler("voice", voice))
+    app.add_handler(CommandHandler("qrcode", make_qr))
+    app.add_handler(CommandHandler("joke", joke))
+    app.add_handler(CommandHandler("find", find))
+    app.add_handler(CommandHandler("next", next))
+    app.add_handler(CommandHandler("stop", stop))
+
+    app.add_handler(MessageHandler(filters.TEXT | filters.PHOTO, relay))
+
+    # --- تغییر مهم ---
+    PORT = int(os.environ.get("PORT", 10000))
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=PORT,
+        url_path=TOKEN,
+        webhook_url=f"https://{os.environ['RENDER_EXTERNAL_HOSTNAME']}/{TOKEN}"
+    )
+
 
 if __name__ == "__main__":
     main()
