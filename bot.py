@@ -8,11 +8,11 @@ ADMIN_ID = int(os.environ.get("ADMIN_ID", "0"))
 DB_FILE = "media_db.json"
 
 CHANNELS = [
-    "@channel1",
-    "@channel2",
-    "@channel3",
-    "@channel4",
-    "@channel5",
+    "@Araksemnan1",
+    "@Araksemnan1",
+    "@Araksemnan1",
+    "@Araksemnan1",
+    "@Araksemnan1",
 ]
 
 if os.path.exists(DB_FILE):
